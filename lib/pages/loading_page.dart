@@ -23,13 +23,13 @@ class LoadingPage extends StatelessWidget {
 Future checkGpsLocation(BuildContext context) async {
   await Future.delayed(Duration(milliseconds: 200));
 
-  Navigator.pushReplacement(
-    context,
-    navegarMapaFadeIn(
-      context,
-      GpsAccessPage(),
-    ),
-  );
+  // Navigator.pushReplacement(
+  //   context,
+  //   navegarMapaFadeIn(
+  //     context,
+  //     GpsAccessPage(),
+  //   ),
+  // );
   // Navigator.pushReplacement(
   //   context,
   //   navegarMapaFadeIn(
