@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:map_app/helpers/helpers.dart';
-import 'package:map_app/pages/mapa_page.dart';
+import 'package:map_app/pages/gps_access_page.dart';
+import 'package:map_app/pages/map_page.dart';
 
 class LoadingPage extends StatelessWidget {
   @override
@@ -20,13 +21,20 @@ class LoadingPage extends StatelessWidget {
 }
 
 Future checkGpsLocation(BuildContext context) async {
-  await Future.delayed(Duration(milliseconds: 1000));
+  await Future.delayed(Duration(milliseconds: 200));
 
   Navigator.pushReplacement(
     context,
     navegarMapaFadeIn(
       context,
-      MapaPage(),
+      GpsAccessPage(),
     ),
   );
+  // Navigator.pushReplacement(
+  //   context,
+  //   navegarMapaFadeIn(
+  //     context,
+  //     MapaPage(),
+  //   ),
+  // );
 }
