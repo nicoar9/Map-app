@@ -17,11 +17,13 @@ class MyLocationBloc extends Bloc<MyLocationEvent, MyLocationState> {
     this._positionSubscription = Geolocator.getPositionStream(
             desiredAccuracy: LocationAccuracy.high, distanceFilter: 10)
         .listen((position) {
-      print(position);
+      final latlng = LatLng(position.latitude, position.longitude);
+
+      add(OnChangeLocation(latlng));
     });
   }
 
-  void disposeTracing() {
+  void disposeTracking() {
     this._positionSubscription.cancel();
   }
 
@@ -29,6 +31,8 @@ class MyLocationBloc extends Bloc<MyLocationEvent, MyLocationState> {
   Stream<MyLocationState> mapEventToState(
     MyLocationEvent event,
   ) async* {
-    // TODO: implement mapEventToState
+    if (event is OnChangeLocation) {
+      yield state.copyWith(existLocation: true, location: event.location);
+    }
   }
 }

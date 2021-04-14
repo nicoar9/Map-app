@@ -15,10 +15,20 @@ class _MapPageState extends State<MapPage> {
   }
 
   @override
+  void dispose() {
+    BlocProvider.of<MyLocationBloc>(context).disposeTracking();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('Hola Mundo'),
+      body: BlocBuilder<MyLocationBloc, MyLocationState>(
+        builder: (_, state) => Center(
+          child:
+              Text(!state.existLocation ? 'Locating...' : '${state.location}'),
+        ),
       ),
     );
   }
