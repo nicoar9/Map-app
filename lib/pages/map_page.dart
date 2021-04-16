@@ -27,23 +27,24 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<MyLocationBloc, MyLocationState>(
-        builder: (_, state) {
-          final mapBloc = BlocProvider.of<MapBloc>(context);
-          final cameraPosition =
-              CameraPosition(target: state.location, zoom: 15);
-          return Center(
-            child: !state.existLocation
-                ? Text('Locating...')
-                : GoogleMap(
-                    initialCameraPosition: cameraPosition,
-                    myLocationEnabled: true,
-                    myLocationButtonEnabled: false,
-                    zoomControlsEnabled: false,
-                    onMapCreated: mapBloc.initMap,
-                  ),
-          );
-        },
-      ),
+          builder: (_, state) => createMap(state)),
+    );
+  }
+
+  createMap(MyLocationState state) {
+    final mapBloc = BlocProvider.of<MapBloc>(context);
+
+    if (!state.existLocation)
+      return Center(
+        child: Text("Loading..."),
+      );
+    final cameraPosition = CameraPosition(target: state.location, zoom: 15);
+    return GoogleMap(
+      initialCameraPosition: cameraPosition,
+      myLocationEnabled: true,
+      myLocationButtonEnabled: false,
+      zoomControlsEnabled: false,
+      onMapCreated: mapBloc.initMap,
     );
   }
 }
