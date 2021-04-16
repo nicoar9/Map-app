@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:map_app/bloc/map/map_bloc.dart';
 import 'package:map_app/bloc/my_location/my_location_bloc.dart';
 
 class MapPage extends StatefulWidget {
@@ -25,10 +27,22 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<MyLocationBloc, MyLocationState>(
-        builder: (_, state) => Center(
-          child:
-              Text(!state.existLocation ? 'Locating...' : '${state.location}'),
-        ),
+        builder: (_, state) {
+          final mapBloc = BlocProvider.of<MapBloc>(context);
+          final cameraPosition =
+              CameraPosition(target: state.location, zoom: 15);
+          return Center(
+            child: !state.existLocation
+                ? Text('Locating...')
+                : GoogleMap(
+                    initialCameraPosition: cameraPosition,
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: false,
+                    zoomControlsEnabled: false,
+                    onMapCreated: mapBloc.initMap,
+                  ),
+          );
+        },
       ),
     );
   }
