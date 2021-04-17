@@ -43,13 +43,15 @@ class _MapPageState extends State<MapPage> {
       return Center(
         child: Text("Loading..."),
       );
+    mapBloc.add(OnLocationUpdate(state.location));
+
     final cameraPosition = CameraPosition(target: state.location, zoom: 15);
     return GoogleMap(
-      initialCameraPosition: cameraPosition,
-      myLocationEnabled: true,
-      myLocationButtonEnabled: false,
-      zoomControlsEnabled: false,
-      onMapCreated: mapBloc.initMap,
-    );
+        initialCameraPosition: cameraPosition,
+        myLocationEnabled: true,
+        myLocationButtonEnabled: false,
+        zoomControlsEnabled: false,
+        onMapCreated: mapBloc.initMap,
+        polylines: mapBloc.state.polylines.values.toSet());
   }
 }
