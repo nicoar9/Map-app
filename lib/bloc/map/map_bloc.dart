@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart' show Colors;
 import 'package:map_app/themes/uber_map_theme.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
@@ -14,7 +15,8 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
   GoogleMapController _mapController;
 
-  Polyline _myRoute = Polyline(polylineId: PolylineId('my_route'), width: 4);
+  Polyline _myRoute = Polyline(
+      polylineId: PolylineId('my_route'), width: 4, color: Colors.black87);
 
   void initMap(GoogleMapController controller) {
     if (!state.readyMap) {
@@ -42,6 +44,16 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       final currentPolylines = state.polylines;
       currentPolylines['my_route'] = this._myRoute;
       yield state.copyWith(polylines: currentPolylines);
+    } else if (event is OnDrawedRoute) {
+      if (!state.drawRoute) {
+        this._myRoute = this._myRoute.copyWith(colorParam: Colors.black87);
+      } else {
+        this._myRoute = this._myRoute.copyWith(colorParam: Colors.transparent);
+      }
+      final currentPolylines = state.polylines;
+      currentPolylines['my_route'] = this._myRoute;
+      yield state.copyWith(
+          drawRoute: !state.drawRoute, polylines: currentPolylines);
     }
   }
 }
