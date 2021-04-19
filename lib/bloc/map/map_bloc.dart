@@ -16,7 +16,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   GoogleMapController _mapController;
 
   Polyline _myRoute = Polyline(
-      polylineId: PolylineId('my_route'), width: 4, color: Colors.black87);
+      polylineId: PolylineId('my_route'), width: 4, color: Colors.transparent);
 
   void initMap(GoogleMapController controller) {
     if (!state.readyMap) {
@@ -44,6 +44,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       yield* this._onDrawedRoute(event);
     } else if (event is OnFollowedLocation) {
       yield* _onFollowedLocation(event);
+    } else if (event is OnMovedMap) {
+      print(event.centerMap);
+      yield state.copyWith(centralLocation: event.centerMap);
     }
   }
 

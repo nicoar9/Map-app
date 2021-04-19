@@ -47,11 +47,15 @@ class _MapPageState extends State<MapPage> {
 
     final cameraPosition = CameraPosition(target: state.location, zoom: 15);
     return GoogleMap(
-        initialCameraPosition: cameraPosition,
-        myLocationEnabled: true,
-        myLocationButtonEnabled: false,
-        zoomControlsEnabled: false,
-        onMapCreated: mapBloc.initMap,
-        polylines: mapBloc.state.polylines.values.toSet());
+      initialCameraPosition: cameraPosition,
+      myLocationEnabled: true,
+      myLocationButtonEnabled: false,
+      zoomControlsEnabled: false,
+      onMapCreated: mapBloc.initMap,
+      polylines: mapBloc.state.polylines.values.toSet(),
+      onCameraMove: (cameraPosition) {
+        mapBloc.add(OnMovedMap(cameraPosition.target));
+      },
+    );
   }
 }
