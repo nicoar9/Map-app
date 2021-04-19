@@ -12,7 +12,10 @@ class BtnLocation extends StatelessWidget {
         backgroundColor: Colors.white,
         maxRadius: 25,
         child: IconButton(
-            icon: Icon(Icons.my_location),
+            icon: Icon(
+              Icons.my_location,
+              color: Colors.black87,
+            ),
             onPressed: () {
               final destination = myLocationBloc.state.location;
               mapBloc.moveCamera(destination);
