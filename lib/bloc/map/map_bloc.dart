@@ -48,6 +48,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   }
 
   Stream<MapState> _onLocationUpdate(OnLocationUpdate event) async* {
+    if (state.followLocation) {
+      this.moveCamera(this._myRoute.points[this._myRoute.points.length - 1]);
+    }
     List<LatLng> points = [...this._myRoute.points, event.location];
     this._myRoute = this._myRoute.copyWith(pointsParam: points);
     final currentPolylines = state.polylines;
