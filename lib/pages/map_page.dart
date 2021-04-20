@@ -27,8 +27,13 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<MyLocationBloc, MyLocationState>(
-          builder: (_, state) => createMap(state)),
+      body: Stack(
+        children: [
+          BlocBuilder<MyLocationBloc, MyLocationState>(
+              builder: (_, state) => createMap(state)),
+          Positioned(top: 15, child: SearchBar()),
+        ],
+      ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [BtnLocation(), BtnFollowLocation(), BtnMyRoute()],
