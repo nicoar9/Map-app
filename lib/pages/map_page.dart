@@ -30,8 +30,14 @@ class _MapPageState extends State<MapPage> {
       body: Stack(
         children: [
           BlocBuilder<MyLocationBloc, MyLocationState>(
-              builder: (_, state) => createMap(state)),
-          Positioned(top: 15, child: SearchBar()),
+            builder: (_, state) => createMap(state),
+          ),
+
+          // Positioned(
+          //   top: 15,
+          //   child: SearchBar(),
+          // ),
+          ManualMarker(),
         ],
       ),
       floatingActionButton: Column(
