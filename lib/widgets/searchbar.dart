@@ -3,6 +3,18 @@ part of 'widgets.dart';
 class SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<SearchBloc, SearchState>(
+      builder: (context, state) {
+        if (state.manualSelection) {
+          return SizedBox();
+        } else {
+          return buildSearchBar(context);
+        }
+      },
+    );
+  }
+
+  buildSearchBar(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Container(
@@ -15,7 +27,7 @@ class SearchBar extends StatelessWidget {
               context: context,
               delegate: SearchDestination(),
             );
-            this.returnSearch(result);
+            this.returnSearch(context, result);
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 13),
@@ -39,8 +51,14 @@ class SearchBar extends StatelessWidget {
     );
   }
 
-  void returnSearch(SearchResult result) {
-    print(result.cancelled);
-    print(result.manual);
+  void returnSearch(BuildContext context, SearchResult result) {
+    final searchBloc = BlocProvider.of<SearchBloc>(context);
+
+    if (result.cancelled) return;
+    if (result.manual) {
+      searchBloc.add(OnEnabledManualMarker());
+
+      return;
+    }
   }
 }

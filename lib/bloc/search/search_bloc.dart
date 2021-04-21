@@ -13,6 +13,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   Stream<SearchState> mapEventToState(
     SearchEvent event,
   ) async* {
-    // TODO: implement mapEventToState
+    if (event is OnEnabledManualMarker) {
+      yield state.copyWith(manualSelection: true);
+    } else if (event is OnDisabledManualMarker) {
+      yield state.copyWith(manualSelection: false);
+    }
   }
 }
