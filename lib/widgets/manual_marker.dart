@@ -70,11 +70,23 @@ class _BuildManualMarker extends StatelessWidget {
               elevation: 0,
               splashColor: Colors.transparent,
               color: Colors.black87,
-              onPressed: () {},
+              onPressed: () => getDestination(context),
             ),
           ),
         ),
       ],
     );
+  }
+
+  void getDestination(BuildContext context) {
+    final trafficService = TrafficService();
+
+    final currentLocation =
+        BlocProvider.of<MyLocationBloc>(context).state.location;
+
+    final finalDestination =
+        BlocProvider.of<MapBloc>(context).state.centralLocation;
+
+    trafficService.getCoordsStartToEnd(currentLocation, finalDestination);
   }
 }
