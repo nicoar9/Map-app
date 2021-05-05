@@ -78,7 +78,7 @@ class _BuildManualMarker extends StatelessWidget {
     );
   }
 
-  void getDestination(BuildContext context) {
+  void getDestination(BuildContext context) async {
     final trafficService = TrafficService();
 
     final currentLocation =
@@ -87,6 +87,16 @@ class _BuildManualMarker extends StatelessWidget {
     final finalDestination =
         BlocProvider.of<MapBloc>(context).state.centralLocation;
 
-    trafficService.getCoordsStartToEnd(currentLocation, finalDestination);
+    final trafficResponse = await trafficService.getCoordsStartToEnd(
+        currentLocation, finalDestination);
+
+    final geometry = trafficResponse.routes[0].geometry;
+    final duration = trafficResponse.routes[0].duration;
+    final distance = trafficResponse.routes[0].distance;
+
+    final points = Poly.Polyline.Decode(encodedString: geometry, precision: 6)
+        .decodedCoords;
+
+    final temp = points;
   }
 }

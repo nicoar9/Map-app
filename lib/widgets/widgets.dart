@@ -7,6 +7,7 @@ import 'package:map_app/bloc/search/search_bloc.dart';
 import 'package:map_app/models/search_result.dart';
 import 'package:map_app/search/search_destination.dart';
 import 'package:map_app/services/traffic_service.dart';
+import 'package:polyline/polyline.dart' as Poly;
 
 part 'btn_location.dart';
 part 'btn_my_route.dart';
