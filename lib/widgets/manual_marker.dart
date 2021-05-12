@@ -79,6 +79,8 @@ class _BuildManualMarker extends StatelessWidget {
   }
 
   void getDestination(BuildContext context) async {
+    loadingAlert(context);
+
     final trafficService = TrafficService();
     final mapBloc = BlocProvider.of<MapBloc>(context);
     final currentLocation =
@@ -99,6 +101,11 @@ class _BuildManualMarker extends StatelessWidget {
     final List<LatLng> routeCoords =
         points.map((point) => LatLng(point[0], point[1])).toList();
 
-    mapBloc.add(OnCreateStartingRoute(routeCoords, distance, duration));
+    mapBloc.add(
+      OnCreateStartingRoute(routeCoords, distance, duration),
+    );
+
+    Navigator.of(context).pop();
+    BlocProvider.of<SearchBloc>(context).add(OnDisabledManualMarker());
   }
 }
