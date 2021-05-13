@@ -53,9 +53,12 @@ class SearchDestination extends SearchDelegate<SearchResult> {
   }
 
   Widget _buildResultSuggestions() {
-    return FutureBuilder(
-      future:
-          this._trafficService.getQueryResults(this.query.trim(), proximity),
+    this
+        ._trafficService
+        .getSuggestionsByQuery(this.query.trim(), this.proximity);
+
+    return StreamBuilder(
+      stream: this._trafficService.suggestionsStream,
       builder: (BuildContext context, AsyncSnapshot<SearchResponse> snapshot) {
         if (!snapshot.hasData) {
           return Center(child: CircularProgressIndicator());
