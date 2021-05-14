@@ -9,7 +9,8 @@ class SearchDestination extends SearchDelegate<SearchResult> {
   final String searchFieldLabel;
   final TrafficService _trafficService;
   final LatLng proximity;
-  SearchDestination(this.proximity)
+  final List<SearchResult> searchHistory;
+  SearchDestination(this.proximity, this.searchHistory)
       : this.searchFieldLabel = 'Searching...',
         this._trafficService = TrafficService();
 
@@ -45,7 +46,19 @@ class SearchDestination extends SearchDelegate<SearchResult> {
               print('Manually');
               this.close(context, SearchResult(cancelled: false, manual: true));
             },
-          )
+          ),
+          ...this
+              .searchHistory
+              .map(
+                (result) => ListTile(
+                    leading: Icon(Icons.history),
+                    title: Text(result.destinationName),
+                    subtitle: Text(result.description),
+                    onTap: () {
+                      this.close(context, result);
+                    }),
+              )
+              .toList()
         ],
       );
     }

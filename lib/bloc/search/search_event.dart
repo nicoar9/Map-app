@@ -6,3 +6,9 @@ abstract class SearchEvent {}
 class OnEnabledManualMarker extends SearchEvent {}
 
 class OnDisabledManualMarker extends SearchEvent {}
+
+class OnHistoryAdd extends SearchEvent {
+  final SearchResult result;
+
+  OnHistoryAdd(this.result);
+}
