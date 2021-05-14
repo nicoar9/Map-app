@@ -55,7 +55,7 @@ class SearchBar extends StatelessWidget {
     );
   }
 
-  void returnSearch(BuildContext context, SearchResult result) {
+  void returnSearch(BuildContext context, SearchResult result) async {
     final searchBloc = BlocProvider.of<SearchBloc>(context);
 
     if (result.cancelled) return;
@@ -64,5 +64,33 @@ class SearchBar extends StatelessWidget {
 
       return;
     }
+
+    loadingAlert(context);
+
+    final trafficService = TrafficService();
+    final mapBloc = BlocProvider.of<MapBloc>(context);
+    final startDestination =
+        BlocProvider.of<MyLocationBloc>(context).state.location;
+    final finalDestination = result.location;
+
+    final drivingResponse = await trafficService.getCoordsStartToEnd(
+        startDestination, finalDestination);
+
+    final geometry = drivingResponse.routes[0].geometry;
+    final duration = drivingResponse.routes[0].duration;
+    final distance = drivingResponse.routes[0].distance;
+
+    final points = Poly.Polyline.Decode(encodedString: geometry, precision: 6);
+    final List<LatLng> routeCoordinates = points.decodedCoords
+        .map(
+          (point) => LatLng(point[0], point[1]),
+        )
+        .toList();
+
+    mapBloc.add(
+      OnCreateStartingRoute(routeCoordinates, distance, duration),
+    );
+
+    Navigator.of(context).pop();
   }
 }
